@@ -1,213 +1,170 @@
+import pdf from "dynamic-html-pdf";
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
+import fs from "fs";
 import InvoiceList from "../Models/InvoiceModels.js";
-import fs from 'fs';
-import pdf from 'dynamic-html-pdf';
 import upload from "../middleware/image.js";
-import mongoose from "mongoose";
-import Grid from "gridfs-stream";
-// import hbs from 'hbs';
-// import htmlPDF from 'puppeteer-html-pdf';
-// import readFile = require('util').promisify(fs.readFile);
 
-
+import { createReadStream } from "fs";
 
 const InvoiceRouter = express.Router();
 
-InvoiceRouter.get('/downloadCurrent',
+InvoiceRouter.get(
+  "/downloadCurrent",
   expressAsyncHandler(async (req, res) => {
-    const item = await InvoiceList.find()
+    const item = await InvoiceList.find();
     if (item) {
-      res.send(item)
+      res.send(item);
     }
-  }))
+  })
+);
 
 InvoiceRouter.post(
-  "/invo", upload.single("image"), async (req, res) => {
-    if (req.file == undefined) {
-      const category = new InvoiceList({
-        invoicefrom: req.body.Invoicefrom,
-        billto: req.body.billto,
-        shipto: req.body.Shipto,
-        invoiceto: req.body.Invoiceto,
-        optional: req.body.Optional,
-        invoice: req.body.Invoice,
-        invoicesmal: req.body.Invoicesmal,
-        date: req.body.Date,
-        datevalue: req.body.Datevalue,
-        payment: req.body.Payment,
-        paymentvalue: req.body.Paymentvalue,
-        duedate: req.body.Duedate,
-        duedatevalue: req.body.Duedatevalue,
-        ponumber: req.body.Ponumber,
-        ponumbervalue: req.body.Ponumbervalue,
+  "/invo",
+  expressAsyncHandler(async (req, res) => {
+    console.log("req.body.image", req);
 
-        tablelist: req.body.tablelist,
-        notes: req.body.Notes,
-        noterelavent: req.body.Noterelavent,
-        terms: req.body.Terms,
-        termscon: req.body.Termscon,
-        subTotal: req.body.subTotal,
-        discount: req.body.Discount,
-        disvalue: req.body.Disvalue,
-        tax: req.body.Tax,
-        taxvalue: req.body.Taxvalue,
-        shipping: req.body.Shipping,
-        shippingvalue: req.body.Shippingvalue,
-        total: req.body.Total,
-        amountpaid: req.body.Amountpaid,
-        paidvalue: req.body.Paidvalue,
-        balencedue: req.body.Balencedue,
-        tableinvoice: req.body.tableinvoice,
-        tableqty: req.body.tableqty,
-        tablerating: req.body.tablerating,
-        tableamount: req.body.tableamount,
-        subvalue: req.body.Subvalue,
-        duevalue: req.body.duevalue,
-        totalvalue: req.body.totalvalue
-      });
-      console.log("category", category);
-      const createdCategory = await category.save();
-      res.send({ message: 'Product Created', category: createdCategory });
-    } else {
-      const category = new InvoiceList({
-        fieldname: req.file.fieldname,
-        originalname: req.file.originalname,
-        path: req.file.path,
-        filename: req.file.filename,
-        invoicefrom: req.body.Invoicefrom,
-        billto: req.body.billto,
-        shipto: req.body.Shipto,
-        invoiceto: req.body.Invoiceto,
-        optional: req.body.Optional,
-        invoice: req.body.Invoice,
-        invoicesmal: req.body.Invoicesmal,
-        date: req.body.Date,
-        datevalue: req.body.Datevalue,
-        payment: req.body.Payment,
-        paymentvalue: req.body.Paymentvalue,
-        duedate: req.body.Duedate,
-        duedatevalue: req.body.Duedatevalue,
-        ponumber: req.body.Ponumber,
-        ponumbervalue: req.body.Ponumbervalue,
-        tablelist: req.body.tablelist,
-        notes: req.body.Notes,
-        noterelavent: req.body.Noterelavent,
-        terms: req.body.Terms,
-        termscon: req.body.Termscon,
-        subTotal: req.body.subTotal,
-        discount: req.body.Discount,
-        disvalue: req.body.Disvalue,
-        tax: req.body.Tax,
-        taxvalue: req.body.Taxvalue,
-        shipping: req.body.Shipping,
-        shippingvalue: req.body.Shippingvalue,
-        total: req.body.Total,
-        amountpaid: req.body.Amountpaid,
-        paidvalue: req.body.Paidvalue,
-        balencedue: req.body.Balencedue,
-        tableinvoice: req.body.tableinvoice,
-        tableqty: req.body.tableqty,
-        tablerating: req.body.tablerating,
-        tableamount: req.body.tableamount,
-        subvalue: req.body.Subvalue,
-        duevalue: req.body.duevalue,
-        totalvalue: req.body.totalvalue
-      });
-      console.log("category", category);
-      const createdCategory = await category.save();
-      res.send({ message: 'Product Created', category: createdCategory });
+    const category = new InvoiceList({
+      image: req.body.image,
+      invoicefrom: req.body.Invoicefrom,
+      invoicefrom: req.body.Invoicefrom,
+      billto: req.body.billto,
+      shipto: req.body.Shipto,
+      invoiceto: req.body.Invoiceto,
+      optional: req.body.Optional,
+      invoice: req.body.Invoice,
+      invoicesmal: req.body.Invoicesmal,
+      date: req.body.Date,
+      datevalue: req.body.Datevalue,
+      payment: req.body.Payment,
+      paymentvalue: req.body.Paymentvalue,
+      duedate: req.body.Duedate,
+      duedatevalue: req.body.Duedatevalue,
+      ponumber: req.body.Ponumber,
+      ponumbervalue: req.body.Ponumbervalue,
+      tablelist: req.body.tablelist,
+      notes: req.body.Notes,
+      noterelavent: req.body.Noterelavent,
+      terms: req.body.Terms,
+      termscon: req.body.Termscon,
+      subTotal: req.body.subTotal,
+      discount: req.body.Discount,
+      disvalue: req.body.Disvalue,
+      tax: req.body.Tax,
+      taxvalue: req.body.Taxvalue,
+      shipping: req.body.Shipping,
+      shippingvalue: req.body.Shippingvalue,
+      total: req.body.Total,
+      amountpaid: req.body.Amountpaid,
+      paidvalue: req.body.Paidvalue,
+      balencedue: req.body.Balencedue,
+      tableinvoice: req.body.tableinvoice,
+      tableqty: req.body.tableqty,
+      tablerating: req.body.tablerating,
+      tableamount: req.body.tableamount,
+      subvalue: req.body.Subvalue,
+      duevalue: req.body.duevalue,
+      totalvalue: req.body.totalvalue,
+    });
+    console.log("category", category);
+    const createdCategory = await category.save();
+    res.send({ message: "Product Created", category: createdCategory });
+  })
+);
+
+InvoiceRouter.get(
+  "/downloadALLPDF",
+  expressAsyncHandler(async (req, response) => {
+    var usersDetails = await InvoiceList.find();
+
+    var html = fs.readFileSync("Create-template.html", "utf8");
+    var options = {
+      format: "A3",
+      orientation: "portrait",
+      border: "10mm",
+    };
+
+    let data = [];
+    for (let usersDetail of usersDetails) {
+
+      let invoicedata = {};
+      invoicedata.image = usersDetail.image;
+      invoicedata.balencedue = usersDetail.balencedue;
+      invoicedata.invoicefrom = usersDetail.invoicefrom;
+      invoicedata.billto = usersDetail.billto;
+      invoicedata.shipto = usersDetail.shipto;
+      invoicedata.invoiceto = usersDetail.invoiceto;
+      invoicedata.optional = usersDetail.optional;
+      invoicedata.invoice = usersDetail.invoice;
+      invoicedata.invoicesmal = usersDetail.invoicesmal;
+      invoicedata.date = usersDetail.date;
+      invoicedata.datevalue = usersDetail.datevalue;
+      invoicedata.payment = usersDetail.payment;
+      invoicedata.paymentvalue = usersDetail.paymentvalue;
+      invoicedata.duedate = usersDetail.duedate;
+      invoicedata.duedatevalue = usersDetail.duedatevalue;
+      invoicedata.ponumber = usersDetail.ponumber;
+      invoicedata.ponumbervalue = usersDetail.ponumbervalue;
+      invoicedata.notes = usersDetail.notes;
+      invoicedata.noterelavent = usersDetail.noterelavent;
+      invoicedata.terms = usersDetail.terms;
+      invoicedata.termscon = usersDetail.termscon;
+      invoicedata.subTotal = usersDetail.subTotal;
+      invoicedata.discount = usersDetail.discount;
+      invoicedata.disvalue = usersDetail.disvalue;
+      invoicedata.tax = usersDetail.tax;
+      invoicedata.taxvalue = usersDetail.taxvalue;
+      invoicedata.shipping = usersDetail.shipping;
+      invoicedata.shippingvalue = usersDetail.shippingvalue;
+      invoicedata.total = usersDetail.total;
+      invoicedata.amountpaid = usersDetail.amountpaid;
+      invoicedata.paidvalue = usersDetail.paidvalue;
+      invoicedata.balencedue = usersDetail.balencedue;
+      invoicedata.tableinvoice = usersDetail.tableinvoice;
+      invoicedata.tableqty = usersDetail.tableqty;
+      invoicedata.tablerating = usersDetail.tablerating;
+      invoicedata.tableamount = usersDetail.tableamount;
+      invoicedata.subvalue = usersDetail.subvalue;
+      invoicedata.duevalue = usersDetail.duevalue;
+      invoicedata.totalvalue = usersDetail.totalvalue;
+      invoicedata.tableqty = usersDetail.tableqty;
+      invoicedata.tablerating = usersDetail.tablerating;
+      data.push(invoicedata);
     }
 
-  });
-
-InvoiceRouter.get('/downloadALLPDF', expressAsyncHandler(async (req, response) => {
-  // console.log("req0", req);
-  // const users = await InvoiceList.find().sort({ createdAt: -1 }).limit(1)
-  var users = [
-    {
-
-      invoicefrom: 'invoice Form',
-      billto: 'Bill To',
-      shipto: 'Ship to',
-      invoiceto: 'billto',
-      optional: 'shipto',
-      invoice: 'Invoice',
-      invoicesmal: 'invoice1',
-      date: 'Date',
-      datevalue: '10-04-2023',
-      payment: 'Payment Terms',
-      paymentvalue: 'ok',
-      duedate: 'Daue Date',
-      duedatevalue: '20-04-2023',
-      ponumber: 'PO Number',
-      ponumbervalue: '123456789',
-      tablelist: [
-        { Desc: 'test1', qty: '10', Rating: '50', Amount: '60' },
-        { Desc: 'test2', qty: '20', Rating: '30', Amount: '40' },
-        { Desc: 'test3', qty: '80', Rating: '90', Amount: '100' },
-        { Desc: 'test5', qty: '20', Rating: '40', Amount: '60' }
-      ],
-      notes: 'Notes',
-      noterelavent: 'nost item',
-      terms: 'Terms',
-      termscon: 'terms item',
-      subTotal: 'subTotal',
-      discount: 'Discount',
-      disvalue: '200',
-      tax: 'Tax',
-      taxvalue: '300',
-      shipping: 'Shipping',
-      shippingvalue: '400',
-      total: 'Total',
-      amountpaid: 'Amount Paid',
-      paidvalue: '600',
-      balencedue: 'Balance Due',
-      tableinvoice: 'Invoice',
-      tableqty: 'Quanty',
-      tablerating: 'Rating',
-      tableamount: 'Amount',
-      subvalue: '100',
-      duevalue: '700',
-      totalvalue: '500',
-    },
-  ]
-
-  let tables
-  for (let i = 0; i < users.length; i++) {
-    tables = users[i].tablelist
-  }
-
-  var html = fs.readFileSync("Create template.html", "utf8");
-  var options = {
-    format: "A3",
-    orientation: "portrait",
-    border: "10mm",
-  };
+    let tables;
+    for (let i = 0; i < usersDetails.length; i++) {
+      tables = usersDetails[i].tablelist;
+    }
 
 
-
-  var document = {
-    type: 'buffer',     // 'file' or 'buffer'
-    template: html,
-    context: {
-      users: users,
-      tables: tables
-    },
-    path: "./output.pdf"    // it is not required if type is buffer
-  };
-  pdf.create(document, options)
-    .then(res => {
-      response.send(res)
-      console.log("Get All Invoice Pdf trueeee")
-    })
-    .catch(error => {
-      console.error(error)
-    });
-
-
-}));
-
-
+    var document = {
+      type: "file", // 'file' or 'buffer'
+      template: html,
+      context: {
+        invoice: data,
+        tables: tables,
+      },
+      path: "./output.pdf", // it is not required if type is buffer
+    };
+    if (data.length === 0) {
+      return null;
+    } else {
+      await pdf
+        .create(document, options)
+        .then((pathRes) => {
+          const filestream = createReadStream(pathRes.filename);
+          response.writeHead(200, {
+            "Content-Disposition": "attachment;filename=" + "purchasSlips.pdf",
+            "Content-Type": "application/pdf",
+          });
+          filestream.pipe(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  })
+);
 
 export default InvoiceRouter;

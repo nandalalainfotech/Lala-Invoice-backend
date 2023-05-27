@@ -7,7 +7,6 @@ import mongoose from "mongoose";
 import path from "path";
 import { Server } from "socket.io";
 
-
 import InvoiceRouter from "./routers/InvoiceRouter.js";
 import uploadRouter from "./routers/uploadRouter.js";
 
@@ -26,7 +25,7 @@ mongoose
   .then(() => console.log("MongoDB connection established."))
   .catch((error) => console.error("MongoDB connection failed:", error.message));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 

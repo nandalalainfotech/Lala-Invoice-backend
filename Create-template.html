@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <style>
+        table,
+        th,
+        td {
+            text-align: center;
+        }
+
+        .table-cell {
+            position: relative;
+        }
+
+        tr {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+        }
+
+        table {
+            border-spacing: 0;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div style="padding:10px">
+        <table style="border:none;width: 100%; margin-top: 10px; font-size: 0.8em;">
+            {{#each invoice}}
+            <td class="title">
+                <img width="100" height="100"
+                src="{{this.image}}" >
+            </td>
+            <tr>
+                <th colspan="6" style="width: 100px;">
+
+                    <h2>Nandalala</h2>
+                </th>
+
+
+                <th colspan="6" style="text-align:center !important;">
+                    <h1>{{this.invoice}}</h1>
+                </th>
+
+            </tr>
+            <tr>
+                <th colspan="6" style="width: 100px;">
+
+                    <h2>{{this.invoicefrom}}</h2>
+                </th>
+                <th colspan="6" style="text-align:center !important;">
+                    <h1>{{this.invoicesmal}}</h1>
+                </th>
+            </tr>
+
+            {{/each}}
+        </table>
+        <br>
+        <table style="border:none;width: 100%; margin-top: 10px; font-size: 2.8em;">
+            {{#each invoice}}
+            <tr>
+
+                <th colspan="16"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.date}}</th>
+                <th colspan="1" style="font-size: 25px;text-align:right;"> </th>
+                <th colspan="2" style="font-size: 25px;text-align:center;">{{this.datevalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="16"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.payment}}:</th>
+                <th colspan="1" style="font-size: 25px;text-align:right;"> </th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.paymentvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="16"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.duedate}}:</th>
+                <th colspan="1" style="font-size: 25px;text-align:right;"> </th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.duedatevalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="2" style="font-size: 25px;text-align:left;">{{this.billto}}: </th>
+                <th colspan="2" style="font-size: 25px;text-align:left;">{{this.shipto}}:</th>
+
+                <th colspan="12"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.ponumber}}:</th>
+                <th colspan="1" style="font-size: 25px;text-align:right;"> </th>
+                <th colspan="2" style="font-size: 25px;text-align:center;">{{this.ponumbervalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="2" style="font-size: 25px;text-align:left;">{{this.invoiceto}} </th>
+                <th colspan="2" style="font-size: 25px;text-align:left;">{{this.optional}}</th>
+
+                <th colspan="12"></th>
+                <!-- <th colspan="2" style="font-size:25px;text-align:right;">Balance Due:</th>
+                <th colspan="1" style="font-size: 25px;text-align:right;"> </th>
+                <th colspan="2" style="font-size:25px;text-align:center;">US$6,000.00</th> -->
+            </tr>
+
+            <!-- <tr>
+            <th colspan=""  style="text-align:left;text-align:center;width: 20px;">Bill To</th>
+
+            <th colspan="" style="font-size: xx-large;width: 25%;text-align:right;">Ship To</th>
+            <th colspan="" style="font-size: xx-large;width: 25%;text-align:right;">INVOICE</th>
+            <th colspan="" style="font-size: xx-large;width: 25%;text-align:right;">INVOICE</th>
+        </tr> -->
+
+
+            {{/each}}
+        </table>
+        <br>
+        <table style="border:2px solid black;width: 100%; margin-top: 10px; font-size: 2.8em;text-align:right;">
+            {{#each invoice}}
+            <tr style="background-color: black;color: white;vertical-align: middle;">
+                <th colspan="6" style="font-size:25px;text-align:center;">{{this.tableinvoice}}</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.tableqty}}</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.tablerating}}</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.tableamount}}</th>
+            </tr>
+            {{/each}}
+            {{#each tables}}
+            <tr>
+
+                <th colspan="6" style="font-size:25px;text-align:center;">{{this.Desc}}</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.qty}}</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.Rating}}</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.Amount}}</th>
+
+            </tr>
+            {{/each}}
+
+        </table>
+
+        <table style="border:none;width: 100%; margin-top: 10px; font-size: 2.8em;text-align:right;">
+            {{#each invoice}}
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.subTotal}}: </th>
+                <th colspan="2" style="font-size: 25px;text-align:center;">{{this.subvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.discount}}:</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.disvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.tax}}:</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.taxvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size: 25px;text-align:right;">{{this.shipping}}:</th>
+                <th colspan="2" style="font-size: 25px;text-align:center;">{{this.shippingvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size:25px;text-align:right;">{{total}}:</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.totalvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size:25px;text-align:right;">{{this.amountpaid}}:</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.paidvalue}}</th>
+            </tr>
+            <tr>
+                <th colspan="10"></th>
+                <th colspan="2" style="font-size:25px;text-align:right;">{{this.balencedue}}:</th>
+                <th colspan="2" style="font-size:25px;text-align:center;">{{this.duevalue}}</th>
+            </tr>
+            <th colspan="1" style="font-size:25px;text-align:left; margin-top: 10px">{{this.notes}}:</th>
+            <th colspan="1" style="font-size:23px;text-align:left;">{{this.noterelavent}}</th>
+            </tr>
+            <tr>
+                <th colspan="1" style="font-size:25px;text-align:left; margin-top: 10px">{{this.terms}}:</th>
+                <th colspan="1" style="font-size:23px;text-align:left;">{{this.termscon}}</th>
+            </tr>
+            <tr>
+
+            </tr>
+            {{/each}}
+        </table>
+
+    </div>
+
+</body>
+
+</html>
