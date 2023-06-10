@@ -22,7 +22,6 @@ InvoiceRouter.get(
 InvoiceRouter.post(
   "/invo",
   expressAsyncHandler(async (req, res) => {
-    console.log("req.body.image", req);
 
     const category = new InvoiceList({
       image: req.body.image,
@@ -66,7 +65,6 @@ InvoiceRouter.post(
       duevalue: req.body.duevalue,
       totalvalue: req.body.totalvalue,
     });
-    console.log("category", category);
     const createdCategory = await category.save();
     res.send({ message: "Product Created", category: createdCategory });
   })
@@ -75,7 +73,8 @@ InvoiceRouter.post(
 InvoiceRouter.get(
   "/downloadALLPDF",
   expressAsyncHandler(async (req, response) => {
-    var usersDetails = await InvoiceList.find();
+    var usersDetails = await InvoiceList.find().sort({ createdAt: -1 });
+
 
     var html = fs.readFileSync("Create-template.html", "utf8");
     var options = {
@@ -85,8 +84,8 @@ InvoiceRouter.get(
     };
 
     let data = [];
-    for (let usersDetail of usersDetails) {
 
+    for (let usersDetail of usersDetails) {
       let invoicedata = {};
       invoicedata.image = usersDetail.image;
       invoicedata.balencedue = usersDetail.balencedue;
@@ -132,17 +131,19 @@ InvoiceRouter.get(
       data.push(invoicedata);
     }
 
+
     let tables;
     for (let i = 0; i < usersDetails.length; i++) {
       tables = usersDetails[i].tablelist;
     }
 
-
+    let data1 = [];
+    data1.push(data[0]);
     var document = {
       type: "file", // 'file' or 'buffer'
       template: html,
       context: {
-        invoice: data,
+        invoice: data1,
         tables: tables,
       },
       path: "./output.pdf", // it is not required if type is buffer
