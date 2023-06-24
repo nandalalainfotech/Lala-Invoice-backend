@@ -128,17 +128,19 @@ InvoiceRouter.get(
       invoicedata.totalvalue = usersDetail.totalvalue;
       invoicedata.tableqty = usersDetail.tableqty;
       invoicedata.tablerating = usersDetail.tablerating;
+      invoicedata.tablelist = usersDetail.tablelist;
       data.push(invoicedata);
     }
 
-
-    let tables;
-    for (let i = 0; i < usersDetails.length; i++) {
-      tables = usersDetails[i].tablelist;
-    }
+   
 
     let data1 = [];
     data1.push(data[0]);
+    let tables;
+    for (let i = 0; i < data1.length; i++) {
+      tables = data1[i].tablelist;
+    }
+   
     var document = {
       type: "file", // 'file' or 'buffer'
       template: html,
