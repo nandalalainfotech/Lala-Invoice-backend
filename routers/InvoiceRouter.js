@@ -73,7 +73,7 @@ InvoiceRouter.post(
 InvoiceRouter.get(
   "/downloadALLPDF",
   expressAsyncHandler(async (req, response) => {
-    var usersDetails = await InvoiceList.find().sort({ createdAt: -1 });
+    var usersDetails = await InvoiceList.find();
 
 
     var html = fs.readFileSync("Create-template.html", "utf8");
@@ -135,7 +135,7 @@ InvoiceRouter.get(
    
 
     let data1 = [];
-    data1.push(data[0]);
+    data1.push(data[data.length-1]);
     let tables;
     for (let i = 0; i < data1.length; i++) {
       tables = data1[i].tablelist;
